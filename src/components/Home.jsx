@@ -9,6 +9,7 @@ const Home = () => {
       <p>Nuevo cambio</p>
       <p>Nuevo cambio adicional</p>
       <p>Nuevo origien</p>
+      <p>Prettier</p>
     </Fragment>
   );
 };
