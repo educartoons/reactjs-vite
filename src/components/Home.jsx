@@ -8,6 +8,7 @@ const Home = () => {
       <p>Configuración inicial de un proyecto en ReactJS</p>
       <p>Nuevo cambio</p>
       <p>Nuevo cambio adicional</p>
+      <p>Nuevo origien</p>
     </Fragment>
   );
 };
