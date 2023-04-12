@@ -12,11 +12,19 @@
   "license": "ISC",
   "devDependencies": {
     "@vitejs/plugin-react": "^3.1.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.7",
     "vite": "^4.2.1"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier",
+      "pre-push": "npm test"
+    }
   }
+
 }
