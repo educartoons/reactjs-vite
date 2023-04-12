@@ -6,6 +6,7 @@ const Home = () => {
         <Fragment>
             <h1>Curso de introducción a ReactJS</h1>
             <p>Configuración inicial de un proyecto en ReactJS</p>
+            <p>Este nuevo parrafo fue agregado</p>
         </Fragment>
     );
 };
