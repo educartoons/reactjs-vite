@@ -22,7 +22,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier",
+      "pre-commit": "npm run prettier && git add -A .",
       "pre-push": "npm test"
     }
   }
