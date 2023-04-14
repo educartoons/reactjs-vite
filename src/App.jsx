@@ -1,9 +1,9 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-import Home from "./components/Home";
+import Home from './views/Home';
 
-const dom = document.getElementById("root");
+const dom = document.getElementById('root');
 
 const root = createRoot(dom);
 
