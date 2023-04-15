@@ -52,7 +52,7 @@ const Product = ({ product }) => {
         {product.colors.length} color{product.colors.length > 1 && 'es'}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        S/ 769.90
+        {`S/ ${product.price}0`}
       </Typography>
     </Box>
   );

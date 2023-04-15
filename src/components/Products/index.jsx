@@ -24,10 +24,9 @@ function Products({ products }) {
 
   return (
     <Box>
-      <button onClick={handleClick}>Mostrar 3 productos mas</button>
       <Grid container spacing={2}>
         {products.length > 0
-          ? products.slice(0, numProducts).map((product) => (
+          ? products.map((product) => (
               <Grid key={product.id} item md={4}>
                 <Product product={product} />
               </Grid>
