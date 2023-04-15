@@ -52,7 +52,7 @@ const Product = ({ product }) => {
         {product.colors.length} color{product.colors.length > 1 && 'es'}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {`S/ ${product.price}0`}
+        {`S/ ${product.price}`}
       </Typography>
     </Box>
   );
