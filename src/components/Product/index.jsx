@@ -32,6 +32,7 @@ const Product = ({ product }) => {
           color="primary"
           aria-label="agregar a favoritos"
           onClick={handleToggleFavorite}
+          data-testid="favorite-button"
         >
           {favorite ? (
             <FavoriteIcon style={{ color: 'black', fontSize: '20px' }} />
