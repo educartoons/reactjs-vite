@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest --watch=false",
+    "test": "vitest",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "dev": "vite",
     "prepare": "husky install"
