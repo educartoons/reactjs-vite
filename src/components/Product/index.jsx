@@ -55,6 +55,10 @@ const Product = ({ product }) => {
       <Typography variant="body1" gutterBottom>
         {`S/ ${product.price}0`}
       </Typography>
+      <Typography variant="body2" gutterBottom>
+        <p>Probando</p>
+      </Typography>
+      
     </Box>
   );
 };
