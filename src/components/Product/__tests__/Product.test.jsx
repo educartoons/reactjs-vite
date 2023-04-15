@@ -1,20 +1,16 @@
-import { describe, test, expect, beforeEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Product from '../index';
 
-// beforeEach(() => {
-//   const product = {
-//     name: 'Nike Air Max Pulse',
-//     gender: 'hombre',
-//     colors: ['blanco'],
-//     price: 769.9,
-//     image: 'DR0453_001_A_PREM.jpeg',
-//   };
-//   render(<Product product={product} />);
-//   return () => {
-//     cleanup();
-//   };
-// });
+beforeEach(() => {
+  const product = {
+    name: 'Nike Air Max Pulse',
+    gender: 'hombre',
+    colors: ['blanco'],
+    price: 769.9,
+    image: 'DR0453_001_A_PREM.jpeg',
+  };
+  render(<Product product={product} />);
+});
 
 describe('<Product />', () => {
   const product = {
@@ -24,7 +20,6 @@ describe('<Product />', () => {
     price: 769.9,
     image: 'DR0453_001_A_PREM.jpeg',
   };
-  render(<Product product={product} />);
 
   test('always shows its product name', () => {
     expect(screen.getByText('Nike Air Max Pulse')).toBeDefined();
