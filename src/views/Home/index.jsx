@@ -7,6 +7,8 @@ import Filters from '../../components/Filters';
 import { v4 as uuidv4 } from 'uuid';
 import Grid from '@mui/material/Grid';
 
+import { db } from '../../firebase';
+
 const PRODUCTS_API = [
   {
     id: uuidv4(),
