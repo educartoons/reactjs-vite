@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -10,12 +12,27 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+
+import Snackbar from '@mui/material/Snackbar';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
+
+import { isAValidArrayColors } from './util';
+
+import { db } from '../../firebase';
 
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [colors, setColors] = useState('');
   const [gender, setGender] = useState('');
   const [price, setPrice] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+
+  const [errorColors, setErrorColors] = useState(false);
 
   const handleChangeGender = (e) => {
     setGender(e.target.value);
@@ -26,6 +43,7 @@ const AddProduct = () => {
   };
 
   const handleChangeColors = (e) => {
+    setErrorColors(false);
     setColors(e.target.value);
   };
 
@@ -33,8 +51,55 @@ const AddProduct = () => {
     setPrice(e.target.value);
   };
 
+  const handleUploadProduct = async () => {
+    if (!isAValidArrayColors(colors)) {
+      setErrorColors(true);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const docRef = await addDoc(collection(db, 'products'), {
+        name: name,
+        gender: gender,
+        colors: colors.split(',').map((color) => color.trim().toLowerCase()),
+        price: Number.parseFloat(price),
+      });
+      //
+      setName('');
+      setColors('');
+      setGender('');
+      setPrice('');
+      setOpenSnackBar(true);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.error('Error adding document: ', e);
+    }
+  };
+
+  const handleCloseSnackBar = () => {
+    setOpenSnackBar(false);
+  };
+
   return (
     <React.Fragment>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackBar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          El producto <b>{name}</b> ha sido agregado satisfactoriamente.
+        </Alert>
+      </Snackbar>
+
       <CssBaseline />
       <Container maxWidth="lg">
         <Grid container>
@@ -51,6 +116,7 @@ const AddProduct = () => {
                 id="name"
                 label="Nombre"
                 variant="filled"
+                value={name}
                 onChange={handleChangeName}
               />
             </Box>
@@ -82,8 +148,17 @@ const AddProduct = () => {
                 id="colors"
                 label="Colores"
                 variant="filled"
+                value={colors}
                 onChange={handleChangeColors}
               />
+              {errorColors && (
+                <Box mt={2}>
+                  <Alert severity="error">
+                    Los colores deben ir separado por comas y deben ser colores
+                    validos
+                  </Alert>
+                </Box>
+              )}
             </Box>
             <Box mb={2}>
               <TextField
@@ -91,13 +166,20 @@ const AddProduct = () => {
                 id="price"
                 label="Precio"
                 variant="filled"
+                value={price}
                 onChange={handleChangePrice}
               />
             </Box>
             <Box>
-              <Button variant="contained" size="medium">
+              <LoadingButton
+                loading={loading}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="outlined"
+                onClick={handleUploadProduct}
+              >
                 Guardar
-              </Button>
+              </LoadingButton>
             </Box>
           </Grid>
         </Grid>

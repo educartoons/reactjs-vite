@@ -8,4 +8,4 @@ const dom = document.getElementById('root');
 
 const root = createRoot(dom);
 
-root.render(<AddProduct />);
+root.render(<Home />);
