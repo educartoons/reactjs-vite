@@ -8,6 +8,7 @@ const colorsSet = new Set([
   'rosado',
   'marron',
   'blanco',
+  'celeste',
 ]);
 
 function isAValidArrayColors(colors) {

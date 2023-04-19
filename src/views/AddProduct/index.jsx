@@ -22,11 +22,14 @@ import { isAValidArrayColors } from './util';
 
 import { db } from '../../firebase';
 
+import { uploadImage } from '../../cloudinary';
+
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [colors, setColors] = useState('');
   const [gender, setGender] = useState('');
   const [price, setPrice] = useState('');
+  const [file, setFile] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -52,12 +55,24 @@ const AddProduct = () => {
   };
 
   const handleUploadProduct = async () => {
-    if (!isAValidArrayColors(colors)) {
-      setErrorColors(true);
+    setLoading(true);
+
+    const imageUrl = await uploadImage({
+      type: 'image',
+      file,
+      preset: 'sneakers',
+    });
+
+    if (!imageUrl) {
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
+    if (!isAValidArrayColors(colors)) {
+      setErrorColors(true);
+      setLoading(false);
+      return;
+    }
 
     try {
       const docRef = await addDoc(collection(db, 'products'), {
@@ -65,6 +80,7 @@ const AddProduct = () => {
         gender: gender,
         colors: colors.split(',').map((color) => color.trim().toLowerCase()),
         price: Number.parseFloat(price),
+        imageUrl,
       });
       //
       setName('');
@@ -81,6 +97,12 @@ const AddProduct = () => {
 
   const handleCloseSnackBar = () => {
     setOpenSnackBar(false);
+  };
+
+  const handleFile = (e) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
   return (
@@ -123,7 +145,7 @@ const AddProduct = () => {
             <Box mb={2}>
               <Button variant="outlined" component="label" fullWidth>
                 Upload File
-                <input type="file" hidden />
+                <input type="file" hidden onChange={handleFile} />
               </Button>
             </Box>
             <Box mb={2}>

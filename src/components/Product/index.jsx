@@ -19,7 +19,7 @@ const Product = ({ product }) => {
           style={{
             width: '100%',
           }}
-          src={`../../images/${product.image}`}
+          src={product.imageUrl}
           alt=""
         />
         <IconButton
@@ -47,7 +47,7 @@ const Product = ({ product }) => {
         {product.name}
       </Typography>
       <Typography variant="body2" gutterBottom>
-        Zapatillas para hombre
+        Zapatillas para {product.gender}
       </Typography>
       <Typography variant="body1" gutterBottom>
         {product.colors.length} color{product.colors.length > 1 && 'es'}
