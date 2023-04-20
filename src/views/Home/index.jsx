@@ -7,45 +7,50 @@ import Filters from '../../components/Filters';
 import { v4 as uuidv4 } from 'uuid';
 import Grid from '@mui/material/Grid';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 const FILTERS = ['Basquet', 'Urbano', 'Skateboarding', 'Lifestyle'];
 
-async function getProducts() {
-  const querySnapshot = await getDocs(collection(db, 'products'));
-  const products = [];
-  querySnapshot.forEach((doc) => {
-    products.push({
-      id: doc.id,
-      ...doc.data(),
-    });
-  });
-
-  return products;
-}
-
 const Home = () => {
   const [products, setProducts] = useState([]);
 
-  useEffect(async () => {
-    const data = await getProducts();
-    setProducts(data);
+  useEffect(() => {
+    const getProducts = async () => {
+      // const querySnapshot = await getDocs(collection(db, 'products'));
+
+      const q = query(
+        collection(db, 'products'),
+        where('gender', 'in', ['Mujer', 'Hombre']),
+        where('colors', 'array-contains', 'azul')
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      const products = [];
+      querySnapshot.forEach((doc) => {
+        products.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      setProducts(products);
+    };
+
+    getProducts();
   }, []);
 
   return (
     <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="lg">
-        <Grid container>
-          <Grid item md={2}>
-            <Filters filters={FILTERS} />
-          </Grid>
-          <Grid md={10}>
-            <Products products={products} />
-          </Grid>
+      <Grid container mt={4}>
+        <Grid item md={2}>
+          <Filters filters={FILTERS} />
         </Grid>
-      </Container>
+        <Grid item md={10}>
+          <Products products={products} />
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -21,50 +22,70 @@ const colorsMap = new Map([
 ]);
 
 const Filters = ({ filters }) => {
-  const [checkedFilters, setCheckedFilters] = useState({});
+  const [genders, setGenders] = React.useState({
+    hombre: false,
+    mujer: false,
+  });
 
-  useEffect(() => {
-    const object = {};
-    filters.forEach((filter) => {
-      object[filter] = false;
-    });
-    setCheckedFilters(object);
-    console.log(object);
-  }, []);
-
-  const handleChange = (e) => {
-    const name = e.target.name;
-    setCheckedFilters({
-      ...checkedFilters,
-      [name]: !checkedFilters[name],
+  const handleChangeGender = (event) => {
+    setGenders({
+      ...genders,
+      [event.target.name]: event.target.checked,
     });
   };
+
+  const { hombre, mujer } = genders;
+
   return (
     <Box>
-      <FormGroup>
-        {filters.map((filter, idx) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checkedFilters[filter]}
-                onChange={handleChange}
-                value={filter}
-                name={filter}
-              />
-            }
-            label={filter}
-            key={idx}
-          />
-        ))}
-      </FormGroup>
-      <Box>
+      <Box mb={3}>
         <Typography variant="subtitle1" gutterBottom>
-          Color
+          Género
+          <Box>
+            <FormControl
+              style={{ margin: 0 }}
+              sx={{ m: 3 }}
+              component="fieldset"
+              variant="standard"
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={hombre}
+                      onChange={handleChangeGender}
+                      name="hombre"
+                    />
+                  }
+                  label="Hombre"
+                  key="hombre"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={mujer}
+                      onChange={handleChangeGender}
+                      name="mujer"
+                    />
+                  }
+                  label="Mujer"
+                  key="mujer"
+                />
+              </FormGroup>
+            </FormControl>
+          </Box>
         </Typography>
+      </Box>
+      <Box>
+        <Box mb={2}>
+          <Typography variant="subtitle1" gutterBottom>
+            Color
+          </Typography>
+        </Box>
         {console.log(Object.keys(colorsMap))}
         <Grid container>
           {Array.from(colorsMap.entries()).map(([key, value]) => (
-            <Grid item sm={4} style={{ textAlign: 'center' }}>
+            <Grid key={key} item sm={4} style={{ textAlign: 'center' }}>
               <Box mb={2}>
                 <div
                   style={{
