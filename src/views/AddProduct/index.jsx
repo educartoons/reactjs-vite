@@ -22,11 +22,15 @@ import { isAValidArrayColors } from './util';
 
 import { db } from '../../firebase';
 
+import { uploadFile } from '../../cloudinary';
+
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [colors, setColors] = useState('');
   const [gender, setGender] = useState('');
   const [price, setPrice] = useState('');
+  const [file, setFile] = useState('');
+  const [image, setImage] = useState('');
 
   const [loading, setLoading] = useState(false);
 
@@ -59,18 +63,26 @@ const AddProduct = () => {
 
     setLoading(true);
 
+    const imageUrl = await uploadFile({
+      type: 'image',
+      file,
+      preset: 'nike-sneakers',
+    });
+
     try {
       const docRef = await addDoc(collection(db, 'products'), {
-        name: name,
-        gender: gender,
+        name,
+        gender,
         colors: colors.split(',').map((color) => color.trim().toLowerCase()),
         price: Number.parseFloat(price),
+        imageUrl,
       });
       //
       setName('');
       setColors('');
       setGender('');
       setPrice('');
+      setImage('');
       setOpenSnackBar(true);
       setLoading(false);
     } catch (e) {
@@ -81,6 +93,21 @@ const AddProduct = () => {
 
   const handleCloseSnackBar = () => {
     setOpenSnackBar(false);
+  };
+
+  const handleChangeFile = (e) => {
+    setFile(e.target.files[0]);
+    handleReadFile(e.target.files[0]);
+  };
+
+  const handleReadFile = (file) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', function () {
+      console.log('url');
+      console.log(reader.result);
+      setImage(reader.result);
+    });
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -123,8 +150,11 @@ const AddProduct = () => {
             <Box mb={2}>
               <Button variant="outlined" component="label" fullWidth>
                 Upload File
-                <input type="file" hidden />
+                <input type="file" hidden onChange={handleChangeFile} />
               </Button>
+              <Box mt={2}>
+                <img style={{ width: '200px' }} src={image} alt="" />
+              </Box>
             </Box>
             <Box mb={2}>
               <FormControl fullWidth>
