@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from '../Home';
 import AddProduct from '../AddProduct';
+import NotFound from '../NotFound';
 
 const Layout = () => {
   return (
@@ -19,6 +20,7 @@ const Layout = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/add-product" element={<AddProduct />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
       </React.Fragment>
