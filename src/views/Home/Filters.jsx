@@ -8,8 +8,26 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 
-const Filters = (props) => {
-  const { hombre, mujer } = props.gender;
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../features/products';
+
+const Filters = () => {
+  const genders = useSelector((state) => state.filters.genders);
+
+  const dispatch = useDispatch();
+
+  const handleChangeGenders = (event) => {
+    console.log(event);
+    // setGenders({
+    //   ...genders,
+    //   [event.target.name]: event.target.checked,
+    // });
+    // dispatch(
+    //   fetchProducts({
+    //     genders: { ...genders, [event.target.name]: event.target.checked },
+    //   })
+    // );
+  };
 
   return (
     <Box>
@@ -23,8 +41,8 @@ const Filters = (props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={hombre}
-                onChange={props.handleChangeGenders}
+                checked={genders.hombre}
+                onChange={handleChangeGenders}
                 name="hombre"
               />
             }
@@ -33,8 +51,8 @@ const Filters = (props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={mujer}
-                onChange={props.handleChangeGenders}
+                checked={genders.mujer}
+                onChange={handleChangeGenders}
                 name="mujer"
               />
             }

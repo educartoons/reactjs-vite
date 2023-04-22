@@ -12,7 +12,6 @@ const Filters = ({ filters }) => {
       object[filter] = false;
     });
     setCheckedFilters(object);
-    console.log(object);
   }, []);
 
   const handleChange = (e) => {
