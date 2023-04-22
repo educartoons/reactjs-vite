@@ -24,6 +24,9 @@ import { db } from '../../firebase';
 
 import { uploadFile } from '../../cloudinary';
 
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../features/products';
+
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [colors, setColors] = useState('');
@@ -37,6 +40,8 @@ const AddProduct = () => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const [errorColors, setErrorColors] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleChangeGender = (e) => {
     setGender(e.target.value);
@@ -56,6 +61,16 @@ const AddProduct = () => {
   };
 
   const handleUploadProduct = async () => {
+    dispatch(
+      addProduct({
+        name,
+        colors,
+        price,
+        image,
+      })
+    );
+
+    return;
     if (!isAValidArrayColors(colors)) {
       setErrorColors(true);
       return;
@@ -103,8 +118,6 @@ const AddProduct = () => {
   const handleReadFile = (file) => {
     const reader = new FileReader();
     reader.addEventListener('load', function () {
-      console.log('url');
-      console.log(reader.result);
       setImage(reader.result);
     });
     reader.readAsDataURL(file);

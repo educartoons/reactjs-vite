@@ -7,16 +7,6 @@ import Skeleton from '../Product/Skeleton';
 function Products({ products }) {
   const [numProducts, setNumProducts] = useState(3);
 
-  useEffect(
-    function () {
-      console.log('El usuario esta viendo mas productos');
-      return () => {
-        console.log('Este componente ha sido eliminado');
-      };
-    },
-    [numProducts]
-  );
-
   const handleClick = () => {
     console.log('onClick');
     setNumProducts(numProducts + 3);

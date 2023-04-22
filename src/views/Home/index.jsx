@@ -11,12 +11,15 @@ import { db } from '../../firebase';
 
 import Filters from './Filters';
 
+import { useSelector } from 'react-redux';
+
 const Home = () => {
-  const [products, setProducts] = useState([]);
   const [gender, setGenders] = React.useState({
     hombre: false,
     mujer: false,
   });
+
+  const products = useSelector((state) => state.products.products);
 
   const getGenders = () => {
     if (!gender.hombre && !gender.mujer) {
@@ -33,25 +36,25 @@ const Home = () => {
   };
 
   useEffect(() => {
-    async function getProducts() {
-      const q = query(
-        collection(db, 'products'),
-        where('gender', 'in', getGenders())
-      );
-
-      const querySnapshot = await getDocs(q);
-
-      const products = [];
-      querySnapshot.forEach((doc) => {
-        products.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-
-      setProducts(products);
-    }
-    getProducts();
+    // async function getProducts() {
+    //   const q = query(
+    //     collection(db, 'products'),
+    //     where('gender', 'in', getGenders())
+    //   );
+    //   const querySnapshot = await getDocs(q);
+    //   const products = [];
+    //   querySnapshot.forEach((doc) => {
+    //     products.push({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     });
+    //   });
+    //   setProducts(products);
+    // }
+    // getProducts();
+    // return () => {
+    //   console.log('Este componente ha sido removido');
+    // };
   }, [gender]);
 
   const handleChangeGenders = (event) => {
