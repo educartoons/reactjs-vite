@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Header from './Header';
 import Home from '../Home';
 import AddProduct from '../AddProduct';
+import Product from '../Product';
 
 const Layout = () => {
   return (
@@ -22,6 +23,7 @@ const Layout = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/add-product" element={<AddProduct />} />
+            <Route path="/product/:id" element={<Product />} />
           </Routes>
         </Grid>
       </Container>

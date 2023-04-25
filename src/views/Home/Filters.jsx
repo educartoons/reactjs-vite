@@ -9,6 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { toggleGender } from '../../features/filters';
 import { fetchProducts } from '../../features/products';
 
 const Filters = () => {
@@ -17,16 +18,20 @@ const Filters = () => {
   const dispatch = useDispatch();
 
   const handleChangeGenders = (event) => {
-    console.log(event);
-    // setGenders({
-    //   ...genders,
-    //   [event.target.name]: event.target.checked,
-    // });
-    // dispatch(
-    //   fetchProducts({
-    //     genders: { ...genders, [event.target.name]: event.target.checked },
-    //   })
-    // );
+    dispatch(
+      toggleGender({
+        gender: event.target.name,
+        value: !genders[event.target.name],
+      })
+    );
+    dispatch(
+      fetchProducts({
+        genders: {
+          ...genders,
+          [event.target.name]: !genders[event.target.name],
+        },
+      })
+    );
   };
 
   return (

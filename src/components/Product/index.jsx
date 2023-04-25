@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Link } from 'react-router-dom';
 
 const Product = ({ product }) => {
   const [favorite, setFavorite] = useState(false);
@@ -14,35 +15,37 @@ const Product = ({ product }) => {
 
   return (
     <Box>
-      <figure style={{ padding: 0, margin: 0, position: 'relative' }}>
-        <img
-          style={{
-            width: '100%',
-          }}
-          src={product.imageUrl}
-          alt=""
-        />
-        <IconButton
-          style={{
-            background: 'white',
-            position: 'absolute',
-            top: '0.3em',
-            right: '0.3em',
-          }}
-          color="primary"
-          aria-label="agregar a favoritos"
-          onClick={handleToggleFavorite}
-          data-testid="favorite-button"
-        >
-          {favorite ? (
-            <FavoriteIcon style={{ color: 'black', fontSize: '20px' }} />
-          ) : (
-            <FavoriteBorderOutlinedIcon
-              style={{ color: 'black', fontSize: '20px' }}
-            />
-          )}
-        </IconButton>
-      </figure>
+      <Link to={`/product/${product.id}`}>
+        <figure style={{ padding: 0, margin: 0, position: 'relative' }}>
+          <img
+            style={{
+              width: '100%',
+            }}
+            src={product.imageUrls[0]}
+            alt=""
+          />
+          <IconButton
+            style={{
+              background: 'white',
+              position: 'absolute',
+              top: '0.3em',
+              right: '0.3em',
+            }}
+            color="primary"
+            aria-label="agregar a favoritos"
+            onClick={handleToggleFavorite}
+            data-testid="favorite-button"
+          >
+            {favorite ? (
+              <FavoriteIcon style={{ color: 'black', fontSize: '20px' }} />
+            ) : (
+              <FavoriteBorderOutlinedIcon
+                style={{ color: 'black', fontSize: '20px' }}
+              />
+            )}
+          </IconButton>
+        </figure>
+      </Link>
       <Typography variant="body1" gutterBottom>
         {product.name}
       </Typography>

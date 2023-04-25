@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   genders: {
-    hombre: true,
+    hombre: false,
+    mujer: false,
   },
 };
 
@@ -10,7 +11,15 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    toggleGender: (state) => state,
+    toggleGender: (state, action) => {
+      return {
+        ...state,
+        genders: {
+          ...state.genders,
+          [action.payload.gender]: action.payload.value,
+        },
+      };
+    },
   },
 });
 

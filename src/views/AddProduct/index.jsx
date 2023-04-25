@@ -32,8 +32,10 @@ const AddProduct = () => {
   const [colors, setColors] = useState('');
   const [gender, setGender] = useState('');
   const [price, setPrice] = useState('');
-  const [file, setFile] = useState('');
+  const [files, setFiles] = useState([]);
   const [image, setImage] = useState('');
+  const [description, setDescription] = useState('');
+  const [sizes, setSizes] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -60,16 +62,15 @@ const AddProduct = () => {
     setPrice(e.target.value);
   };
 
-  const handleUploadProduct = async () => {
-    dispatch(
-      addProduct({
-        name,
-        colors: colors.split(',').map((color) => color.trim().toLowerCase()),
-        price,
-      })
-    );
-    return;
+  const handleChangeDescription = (e) => {
+    setDescription(e.target.value);
+  };
 
+  const handleChangeSizes = (e) => {
+    setSizes(e.target.value);
+  };
+
+  const handleUploadProduct = async () => {
     if (!isAValidArrayColors(colors)) {
       setErrorColors(true);
       return;
@@ -77,19 +78,26 @@ const AddProduct = () => {
 
     setLoading(true);
 
-    const imageUrl = await uploadFile({
-      type: 'image',
-      file,
-      preset: 'nike-sneakers',
-    });
+    const imageUrls = [];
+
+    for await (const file of files) {
+      const imageUrl = await uploadFile({
+        type: 'image',
+        file: file,
+        preset: 'nike-sneakers',
+      });
+      imageUrls.push(imageUrl);
+    }
 
     try {
       const docRef = await addDoc(collection(db, 'products'), {
         name,
+        description,
+        sizes: sizes.split(',').map((size) => Number.parseFloat(size)),
         gender,
         colors: colors.split(',').map((color) => color.trim().toLowerCase()),
         price: Number.parseFloat(price),
-        imageUrl,
+        imageUrls,
       });
       //
       setName('');
@@ -109,8 +117,8 @@ const AddProduct = () => {
     setOpenSnackBar(false);
   };
 
-  const handleChangeFile = (e) => {
-    setFile(e.target.files[0]);
+  const handleChangeFiles = (e) => {
+    setFiles([...e.target.files]);
     handleReadFile(e.target.files[0]);
   };
 
@@ -164,11 +172,40 @@ const AddProduct = () => {
             <Box mb={2}>
               <Button variant="outlined" component="label" fullWidth>
                 Upload File
-                <input type="file" hidden onChange={handleChangeFile} />
+                <input
+                  type="file"
+                  hidden
+                  onChange={handleChangeFiles}
+                  multiple
+                />
               </Button>
               <Box mt={2}>
                 <img style={{ width: '200px' }} src={image} alt="" />
               </Box>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="description"
+                  label="Descripción"
+                  placeholder="Descripción"
+                  multiline
+                  variant="filled"
+                  rows={4}
+                  value={description}
+                  onChange={handleChangeDescription}
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <TextField
+                fullWidth
+                id="sizes"
+                label="Tallas"
+                variant="filled"
+                value={sizes}
+                onChange={handleChangeSizes}
+              />
             </Box>
             <Box mb={2}>
               <FormControl fullWidth>
