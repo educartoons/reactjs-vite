@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
 
+import ErrorBoundary from '../ErrorBoundary';
+
 const ProductView = ({ product }) => {
   if (!product) {
     return <h1>Loading...</h1>;
@@ -48,4 +50,10 @@ const ProductView = ({ product }) => {
   );
 };
 
-export default ProductView;
+export default function ProductViewErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <ProductView {...props} />
+    </ErrorBoundary>
+  );
+}
