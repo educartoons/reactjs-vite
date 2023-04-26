@@ -1,17 +1,20 @@
 import React from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
+import ErrorBoundary from '../ErrorBoundary';
 
 const ProductView = ({ product }) => {
   if (!product) {
     return <h1>Loading...</h1>;
   }
 
+  throw new Error('No pudo traer el producto del API');
+
   return (
     <Grid container spacing={5}>
       <Grid item sm={8}>
         <Grid container spacing={1}>
-          {product.imageUrls.map((url) => (
-            <Grid item sm={6}>
+          {product.imageUrls.map((url, id) => (
+            <Grid key={id} item sm={6}>
               <img src={url} alt="" style={{ width: '100%' }} />
             </Grid>
           ))}
@@ -48,4 +51,10 @@ const ProductView = ({ product }) => {
   );
 };
 
-export default ProductView;
+export default function ProductViewErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <ProductView {...props} />
+    </ErrorBoundary>
+  );
+}

@@ -91,7 +91,14 @@ const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.entities = action.payload;
+      state.loading = false;
     });
+    builder.addCase(fetchProducts.pending, (state, action) => {
+      state.loading = true;
+    });
+    // builder.addCase(fetchProducts.rejected, (state, action)=>{
+    //   state.error = ''
+    // })
     builder.addCase(addProduct.fulfilled, (state, action) => {
       state.entities = [action.payload, ...state.entities];
       state.loading = false;
