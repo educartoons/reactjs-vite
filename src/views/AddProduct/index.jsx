@@ -24,8 +24,8 @@ import { db } from '../../firebase';
 
 import { uploadFile } from '../../cloudinary';
 
-import { useDispatch } from 'react-redux';
-import { addProduct } from '../../features/products';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, fetchProducts } from '../../features/products';
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -37,11 +37,11 @@ const AddProduct = () => {
   const [description, setDescription] = useState('');
   const [sizes, setSizes] = useState([]);
 
-  const [loading, setLoading] = useState(false);
-
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const [errorColors, setErrorColors] = useState(false);
+
+  const loading = useSelector((state) => state.products.loading);
 
   const dispatch = useDispatch();
 
@@ -76,39 +76,29 @@ const AddProduct = () => {
       return;
     }
 
-    setLoading(true);
-
-    const imageUrls = [];
-
-    for await (const file of files) {
-      const imageUrl = await uploadFile({
-        type: 'image',
-        file: file,
-        preset: 'nike-sneakers',
-      });
-      imageUrls.push(imageUrl);
-    }
-
     try {
-      const docRef = await addDoc(collection(db, 'products'), {
-        name,
-        description,
-        sizes: sizes.split(',').map((size) => Number.parseFloat(size)),
-        gender,
-        colors: colors.split(',').map((color) => color.trim().toLowerCase()),
-        price: Number.parseFloat(price),
-        imageUrls,
-      });
+      dispatch(
+        addProduct({
+          name,
+          price,
+          description,
+          colors: colors.split(',').map((color) => color.trim().toLowerCase()),
+          sizes: sizes
+            .split(',')
+            .map((color) => Number.parseFloat(color.trim())),
+          files,
+          gender,
+        })
+      );
       //
-      setName('');
-      setColors('');
-      setGender('');
-      setPrice('');
-      setImage('');
-      setOpenSnackBar(true);
-      setLoading(false);
+      // setName('');
+      // setColors('');
+      // setGender('');
+      // setPrice('');
+      // setImage('');
+      // setOpenSnackBar(true);
+      // setLoading(false);
     } catch (e) {
-      setLoading(false);
       console.error('Error adding document: ', e);
     }
   };
