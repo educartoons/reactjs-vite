@@ -5,6 +5,19 @@ const initialState = {
     hombre: false,
     mujer: false,
   },
+  colors: {
+    naranja: false,
+    amarillo: false,
+    morado: false,
+    azul: false,
+    rojo: false,
+    verde: false,
+    rosado: false,
+    gris: false,
+    marron: false,
+    negro: false,
+    blanco: false,
+  },
 };
 
 const filtersSlice = createSlice({
@@ -16,7 +29,16 @@ const filtersSlice = createSlice({
         ...state,
         genders: {
           ...state.genders,
-          [action.payload.gender]: action.payload.value,
+          [action.payload.gender]: !state.genders[action.payload.gender],
+        },
+      };
+    },
+    toggleColor: (state, action) => {
+      return {
+        ...state,
+        colors: {
+          ...state.colors,
+          [action.payload.name]: !state.colors[action.payload.name],
         },
       };
     },
@@ -25,6 +47,6 @@ const filtersSlice = createSlice({
 
 export const filtersReducer = filtersSlice.reducer;
 
-export const { toggleGender } = filtersSlice.actions;
+export const { toggleGender, toggleColor } = filtersSlice.actions;
 
 export default filtersSlice;

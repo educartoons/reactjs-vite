@@ -77,7 +77,7 @@ const AddProduct = () => {
     }
 
     try {
-      dispatch(
+      await dispatch(
         addProduct({
           name,
           price,
@@ -90,14 +90,16 @@ const AddProduct = () => {
           gender,
         })
       );
+      setOpenSnackBar(true);
       //
-      // setName('');
-      // setColors('');
-      // setGender('');
-      // setPrice('');
-      // setImage('');
-      // setOpenSnackBar(true);
-      // setLoading(false);
+      setName('');
+      setColors('');
+      setGender('');
+      setPrice('');
+      setImage('');
+      setFiles([]);
+      setSizes('');
+      setDescription('');
     } catch (e) {
       console.error('Error adding document: ', e);
     }

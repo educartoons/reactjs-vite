@@ -3,7 +3,7 @@ import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { uploadFile } from '../cloudinary';
 
-import { getGenders } from './utils';
+import { getGenders, getColors } from './utils';
 
 const initialState = {
   entities: [],
@@ -56,19 +56,39 @@ export const addProduct = createAsyncThunk(
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (filters = {}, thunkAPI) => {
-    let q;
+    console.log('getting products');
 
-    if (Object.keys(filters).length === 0) {
-      q = query(
-        collection(db, 'products'),
-        where('gender', 'in', ['Hombre', 'Mujer'])
-      );
-    } else {
-      q = query(
-        collection(db, 'products'),
-        where('gender', 'in', getGenders(filters.genders))
-      );
+    let genders = ['Hombre', 'Mujer'];
+
+    if (filters.genders) {
+      genders = getGenders(filters.genders);
     }
+
+    let colors = [
+      'naranja',
+      'amarillo',
+      'morado',
+      'azul',
+      'rojo',
+      'verde',
+      'rosado',
+      'gris',
+      'marron',
+      'negro',
+    ];
+
+    if (filters.colors) {
+      colors = getColors(filters.colors);
+    }
+
+    console.log('genders', genders);
+    console.log('colors', colors);
+
+    const q = query(
+      collection(db, 'products'),
+      where('gender', 'in', genders),
+      where('colors', 'array-contains-any', colors)
+    );
 
     const querySnapshot = await getDocs(q);
 

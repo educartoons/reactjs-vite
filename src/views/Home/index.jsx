@@ -17,11 +17,11 @@ const Home = () => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Grid container>
-          <Grid item md={2}>
+        <Grid container spacing={2}>
+          <Grid item md={3} paddingRight={6}>
             <Filters />
           </Grid>
-          <Grid item md={10}>
+          <Grid item md={9}>
             <Products products={products} />
           </Grid>
         </Grid>

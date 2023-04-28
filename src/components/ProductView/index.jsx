@@ -7,8 +7,6 @@ const ProductView = ({ product }) => {
     return <h1>Loading...</h1>;
   }
 
-  throw new Error('No pudo traer el producto del API');
-
   return (
     <Grid container spacing={5}>
       <Grid item sm={8}>
