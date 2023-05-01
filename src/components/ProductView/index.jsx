@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import ErrorBoundary from '../ErrorBoundary';
+import { useDispatch } from 'react-redux';
+import { addProductToCart } from '../../features/cart';
 
 const ProductView = ({ product }) => {
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const dispatch = useDispatch();
+
   if (!product) {
     return <h1>Loading...</h1>;
   }
 
+  const handleAddProductToCart = () => {
+    dispatch(addProductToCart({ id: product.id }));
+    setOpenSnackBar(true);
+  };
+
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={5} mt={0}>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={() => {
+          setOpenSnackBar(false);
+        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => {
+            setOpenSnackBar(false);
+          }}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          El producto <b>{product.name}</b> ha sido agregado satisfactoriamente
+          a tu carrito de compras.
+        </Alert>
+      </Snackbar>
       <Grid item sm={8}>
         <Grid container spacing={1}>
           {product.imageUrls.map((url, id) => (
@@ -37,6 +68,7 @@ const ProductView = ({ product }) => {
               paddingTop: '0.7em',
               paddingBottom: '0.7em',
             }}
+            onClick={handleAddProductToCart}
           >
             Agregar a carrito
           </Button>
