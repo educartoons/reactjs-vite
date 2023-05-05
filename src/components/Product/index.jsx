@@ -9,7 +9,9 @@ import { Link } from 'react-router-dom';
 const Product = ({ product }) => {
   const [favorite, setFavorite] = useState(false);
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setFavorite(!favorite);
   };
 

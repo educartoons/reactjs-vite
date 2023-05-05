@@ -4,6 +4,7 @@ import Search from './Search';
 import Navigation from './Navigation';
 import Badge from '@mui/material/Badge';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const cart = useSelector((state) => state.cart.entities);
@@ -26,32 +27,34 @@ const Header = () => {
         <Search />
       </Grid>
       <Grid item>
-        <Badge badgeContent={cart.length} color="primary">
-          <button
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              width: '24px',
-              height: '24px',
-            }}
-          >
-            <svg
-              focusable="false"
-              viewBox="0 0 24 24"
-              role="img"
-              width="24px"
-              height="24px"
-              fill="none"
+        <Link to="/cart">
+          <Badge badgeContent={cart.length} color="primary">
+            <button
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                width: '24px',
+                height: '24px',
+              }}
             >
-              <path
-                stroke="#000"
-                strokeWidth="1.5"
-                d="M8.25 8.25V6a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 110 4.5H3.75v8.25a3.75 3.75 0 003.75 3.75h9a3.75 3.75 0 003.75-3.75V8.25H17.5"
-              ></path>
-            </svg>
-          </button>
-        </Badge>
+              <svg
+                focusable="false"
+                viewBox="0 0 24 24"
+                role="img"
+                width="24px"
+                height="24px"
+                fill="none"
+              >
+                <path
+                  stroke="#000"
+                  strokeWidth="1.5"
+                  d="M8.25 8.25V6a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 110 4.5H3.75v8.25a3.75 3.75 0 003.75 3.75h9a3.75 3.75 0 003.75-3.75V8.25H17.5"
+                ></path>
+              </svg>
+            </button>
+          </Badge>
+        </Link>
       </Grid>
     </Grid>
   );

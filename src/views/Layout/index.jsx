@@ -10,6 +10,8 @@ import Header from './Header';
 import Home from '../Home';
 import AddProduct from '../AddProduct';
 import Product from '../Product';
+import Cart from '../Cart';
+import NotFound from '../NotFound';
 
 const Layout = () => {
   return (
@@ -24,6 +26,8 @@ const Layout = () => {
             <Route path="/" element={<Home />} />
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/product/:id" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Grid>
       </Container>

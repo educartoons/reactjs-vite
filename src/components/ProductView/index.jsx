@@ -15,7 +15,7 @@ const ProductView = ({ product }) => {
   }
 
   const handleAddProductToCart = () => {
-    dispatch(addProductToCart({ id: product.id }));
+    dispatch(addProductToCart({ product }));
     setOpenSnackBar(true);
   };
 
